@@ -61,12 +61,12 @@ function plot_temperature(sol; plot_in_kelvin=false)
     end
 
     p1
-    
+
 end
 
-function plot_gelation(sol2)
+function plot_gelation(sol, sol2)
 
-    positions, labels, colors, styles = crosssection_variables(sol2);
+    positions, labels, colors, styles = crosssection_variables(sol);
 
     p2 = plot(title="Gelation", xlabel="Time [min]", ylabel="Degree of Cooking", legend = false, ylim=(0, 1));
 
@@ -81,7 +81,7 @@ end
 function plot_temperature_and_gelation(sol, sol2; plot_in_kelvin=false)
 
     p1 = plot_temperature(sol; plot_in_kelvin=false);
-    p2 = plot_gelation(sol);
+    p2 = plot_gelation(sol, sol2);
     
     plot(p1, p2, layout=(1, 2), size=(800, 300), dpi=300, left_margin = 5Plots.mm, bottom_margin=5Plots.mm)
 end
