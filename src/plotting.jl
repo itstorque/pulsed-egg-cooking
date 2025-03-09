@@ -45,7 +45,9 @@ function crosssection_variables(sol)
 
 end
 
-function plot_temperature(sol)
+function plot_temperature(sol; plot_in_kelvin=false)
+
+    temperature_offset = plot_in_kelvin ? 273.15 : 0.0
 
     positions, labels, colors, styles = crosssection_variables(sol);
 
@@ -57,6 +59,9 @@ function plot_temperature(sol)
     for (i, pos) in enumerate(positions)
         Plots.plot!(sol.t/60, temperature_offset .+ hcat(sol.u...)[pos, :], label=labels[i], color=colors[i], style=styles[i])
     end
+
+    p1
+    
 end
 
 function plot_gelation(sol2)
@@ -69,11 +74,13 @@ function plot_gelation(sol2)
         plot!(sol2.t/60, hcat(sol2.u...)[pos, :], label=labels[i], color=colors[i], style=styles[i])
     end
 
+    p2
+
 end
 
-function plot_temperature_and_gelation(sol, sol2)
+function plot_temperature_and_gelation(sol, sol2; plot_in_kelvin=false)
 
-    p1 = plot_temperature(sol);
+    p1 = plot_temperature(sol; plot_in_kelvin=false);
     p2 = plot_gelation(sol);
     
     plot(p1, p2, layout=(1, 2), size=(800, 300), dpi=300, left_margin = 5Plots.mm, bottom_margin=5Plots.mm)

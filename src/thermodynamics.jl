@@ -10,15 +10,15 @@ function thermodynamic_simulation(
         affect!::Function;
         # Simulation parameters
         Δt::Float64,
-        Tegg_init::Real=20.,
+        Tegg_init::Float64=20.,
         n_cells::Integer=50,
-        scaler::Real=0.37,
-        scaler_asym::Real=1,
+        scaler::Float64=0.37,
+        scaler_asym::Float64=1.,
         # Egg parameters
-        egg_diameter::Real=6e-2,
-        yolk_diameter::Real=3e-2,
-        T_init::Union{Nothing, Real}=nothing,
-        T_clamp_alpha::Real=200.,
+        egg_diameter::Float64=6e-2,
+        yolk_diameter::Float64=3e-2,
+        T_init::Union{Nothing, Float64}=nothing,
+        T_clamp_alpha::Float64=200.,
         solver_opts::Dict=Dict(),
         alg=SBDF2(autodiff=false) #IMEXEuler
     )
@@ -65,7 +65,7 @@ function thermodynamic_simulation(
         α_vec
     end
 
-    FT = Real; # float type
+    FT = Float64; # float type
 
     a, b, n = 0, 1, n_cells   # zmin, zmax
     n_yolk = Integer(round(yolk_diameter*n_cells/egg_diameter)) #11
@@ -159,8 +159,8 @@ end
 function thermodynamic_simulation_steps(
     # Drive parameters
     t_total::Float64, # seconds
-    pulsing_period::Real, # seconds
-    pulse_sequence::Array{Real}; # tempratures in Celsius
+    pulsing_period::Float64, # seconds
+    pulse_sequence::Array{Float64}; # tempratures in Celsius
     solver_opts::Dict=Dict(),
     kwargs...
 )
@@ -223,12 +223,12 @@ end
 function thermodynamic_simulation_steps(
     # Drive parameters
     t_total::Float64,
-    pulsing_period::Real,
-    duty_cycle::Real,
-    T_hot::Real,
-    T_cold::Real;
+    pulsing_period::Float64,
+    duty_cycle::Float64,
+    T_hot::Float64,
+    T_cold::Float64;
     Δt::Float64,
-    T_init::Union{Nothing, Real}=nothing,
+    T_init::Union{Nothing, Float64}=nothing,
     solver_opts::Dict=Dict(),
     kwargs...
 )
@@ -283,6 +283,7 @@ function thermodynamic_simulation_steps(
         affect!;
         Δt=Δt,
         T_init=T_init,
+        solver_opts=solver_opts,
         kwargs...
     )
 
@@ -293,15 +294,15 @@ end
 # Unitful variants of the thermodynamic simulation functions
 # """
 # function thermodynamic_simulation_steps(
-#     t_total::Quantity{<:Real, 𝐓},
-#     pulsing_period::Quantity{<:Real, 𝐓},
-#     pulse_sequence::Array{<:Quantity{<:Real, 𝚯}};
-#     T_init::Union{Nothing, Quantity{<:Real, 𝚯}}=nothing,
-#     T_clamp_alpha::Quantity{<:Real, 𝚯}=200.°C,
-#     Δt::Quantity{<:Real, 𝐓}=1.0s,
-#     egg_diameter::Quantity{<:Real, 𝐋}=6e-2m,
-#     yolk_diameter::Quantity{<:Real, 𝐋}=3e-2m,
-#     Tegg_init::Quantity{<:Real, 𝚯}=20.°C,
+#     t_total::Quantity{<:Float64, 𝐓},
+#     pulsing_period::Quantity{<:Float64, 𝐓},
+#     pulse_sequence::Array{<:Quantity{<:Float64, 𝚯}};
+#     T_init::Union{Nothing, Quantity{<:Float64, 𝚯}}=nothing,
+#     T_clamp_alpha::Quantity{<:Float64, 𝚯}=200.°C,
+#     Δt::Quantity{<:Float64, 𝐓}=1.0s,
+#     egg_diameter::Quantity{<:Float64, 𝐋}=6e-2m,
+#     yolk_diameter::Quantity{<:Float64, 𝐋}=3e-2m,
+#     Tegg_init::Quantity{<:Float64, 𝚯}=20.°C,
 #     kwargs...
 # )
 #     # Convert all unitful quantities to their underlying numerical values in base units (Celsius)
@@ -329,16 +330,16 @@ end
 # end 
 
 # function thermodynamic_simulation_steps(
-#     t_total::Quantity{<:Real, 𝐓},
-#     pulsing_period::Quantity{<:Real, 𝐓},
-#     duty_cycle::Quantity{<:Real, 𝐓},
-#     T_hot::Quantity{<:Real, 𝚯},
-#     T_cold::Quantity{<:Real, 𝚯};
-#     T_clamp_alpha::Quantity{<:Real, 𝚯}=200.°C,
-#     Δt::Quantity{<:Real, 𝐓}=1.0s,
-#     egg_diameter::Quantity{<:Real, 𝐋}=6e-2m,
-#     yolk_diameter::Quantity{<:Real, 𝐋}=3e-2m,
-#     Tegg_init::Quantity{<:Real, 𝚯}=20.°C,
+#     t_total::Quantity{<:Float64, 𝐓},
+#     pulsing_period::Quantity{<:Float64, 𝐓},
+#     duty_cycle::Quantity{<:Float64, 𝐓},
+#     T_hot::Quantity{<:Float64, 𝚯},
+#     T_cold::Quantity{<:Float64, 𝚯};
+#     T_clamp_alpha::Quantity{<:Float64, 𝚯}=200.°C,
+#     Δt::Quantity{<:Float64, 𝐓}=1.0s,
+#     egg_diameter::Quantity{<:Float64, 𝐋}=6e-2m,
+#     yolk_diameter::Quantity{<:Float64, 𝐋}=3e-2m,
+#     Tegg_init::Quantity{<:Float64, 𝚯}=20.°C,
 #     kwargs...
 # )
 #     # Convert all unitful quantities to their underlying numerical values in base units (Celsius)

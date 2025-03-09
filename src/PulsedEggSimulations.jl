@@ -2,7 +2,7 @@ module PulsedEggSimulations
 
     using LinearAlgebra
     using DiffEqBase
-    using OrdinaryDiffEq: SplitODEProblem, solve, IMEXEuler, KenCarp4, SBDF2
+    using OrdinaryDiffEq: SplitODEProblem, solve, IMEXEuler, KenCarp4, SBDF2, Rosenbrock23
     import SciMLBase
     using Plots
     using Statistics
